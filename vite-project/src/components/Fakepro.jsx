@@ -15,6 +15,11 @@ const Fakepro = () => {
         fetchData()
     },[])
 
+    useEffect(()=>{
+        const localData=JSON.parse(localStorage.getItem('cart')) || []
+        setCartData(localData)
+    },[])
+
     const addToCart=(item)=>{
         // setCartData([...cartData,item])
         const newItem = [...cartData,item]
@@ -27,6 +32,7 @@ const Fakepro = () => {
         
         // setCartData(cartData.filter(item=>item.id!=id))
         const newCart=cartData.filter(item=>item.id!=id)
+        setCartData(newCart)
         localStorage.setItem("cart",JSON.stringify(newCart))
     }
   return (
@@ -62,6 +68,18 @@ const Fakepro = () => {
 }
 
 export default Fakepro
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,64 @@
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+
+const Fakepro = () => {
+    const [ProductData, setProductData] = useState([])
+    const [isLoading, setLoading] = useState(true)
+    const [cartData, setCartData] = useState([])
+
+    // Fetch product data
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get('https://fakestoreapi.com/products')
+            setProductData(response.data)
+            setLoading(false)
+        }
+        fetchData()
+    }, [])
+
+    // Load cart data from localStorage
+    useEffect(() => {
+        const storedCart = JSON.parse(localStorage.getItem("cart")) || []
+        setCartData(storedCart)
+    }, [])
+
+    const addToCart = (item) => {
+        const newCart = [...cartData, item]
+        setCartData(newCart)
+        localStorage.setItem("cart", JSON.stringify(newCart))
+    }
+
+    const removeCart = (id) => {
+        const newCart = cartData.filter(item => item.id !== id)
+        setCartData(newCart)  // Update state
+        localStorage.setItem("cart", JSON.stringify(newCart))  // Update localStorage
+    }
+
+    return (
+        <>
+            <h1>Cart Items: {cartData.length}</h1>
+            {cartData.length === 0 ? <h3>Cart is empty</h3> : cartData.map((hel, index) => (
+                <div key={index}>
+                    <h6>{hel.title}</h6>
+                    <p>{hel.price}</p>
+                    <button className='bg-red-400' onClick={() => removeCart(hel.id)}>Remove</button>
+                </div>
+            ))}
+
+            {isLoading ? <h1>....Loading....</h1> : ProductData.map((item, index) => (
+                <div key={index} className='w-[500px] bg-blue-400 flex '>
+                    <div className='bg-red-500 my-5 py-2 w-[400px] '>
+                        <img src={item.image} className='w-[100px] mx-auto' alt={item.title} />
+                        <h3>{item.title}</h3>
+                        <p>{item.category}</p>
+                        <p>{item.price}</p>
+                        <button className='border bg-blue-400 px-5 rounded py-2' onClick={() => addToCart(item)}>Add to Cart</button>
+                        <button className='border bg-blue-400 px-5 rounded py-2 ml-5' onClick={() => removeCart(item.id)}>Remove from Cart</button>
+                    </div>
+                </div>
+            ))}
+        </>
+    )
+}
+
+export default Fakepro

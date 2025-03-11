@@ -4,6 +4,7 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import LazyLoadingImage from './components/LazyLoadingImage';
 import Fakepro from './components/Fakepro';
+import DataApi from './components/DataApi';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -20,7 +21,8 @@ const App = () => {
       {/* <Login /> */}
       {/* <SignUp /> */}
       {/* <LazyLoadingImage data={data} /> */}
-      <Fakepro/>
+      {/* <Fakepro/> */}
+      <DataApi/>
     </div>
   );
 };
